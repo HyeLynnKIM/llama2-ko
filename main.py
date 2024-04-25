@@ -24,7 +24,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 import run_faiss, run_chroma
 
 ## api-key
-os.environ['HUGGINGFACEHUB_API_TOKEN'] = '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'
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = '-'
 repo_id = "beomi/open-llama-2-ko-7b"
 task='text-generation'
 
