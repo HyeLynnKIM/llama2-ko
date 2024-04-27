@@ -129,3 +129,4 @@ if __name__=="__main__":
     args = parser.parse_args()
     FT_main(args)
     # "beomi/open-llama-2-ko-7b"
+    # "beomi/open-llama-2-ko-7b"
