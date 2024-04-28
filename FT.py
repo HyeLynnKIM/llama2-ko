@@ -52,8 +52,9 @@ def FT_main(args):
         task_type="CAUSAL_LM",
     )
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, eos_token='</s>')
+    # tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.pad_token = tokenizer.unk_token
 
     # 학습 진행 중 loss가 치솟다가 0.0으로 떨어지는 문제 해결을 위해 사용
     tokenizer.padding_side = "right"
@@ -69,7 +70,7 @@ def FT_main(args):
 
     # template dataset to add prompt to each sample
     def template_dataset(sample):
-        sample["text"] = f"당신은 많은 지식을 가진 유능한 어시스턴트 입니다. 다음 질문에 대해서 올바르게 답해주세요. {format_kullm(sample)}{tokenizer.eos_token}"
+        sample["text"] = f"당신은 많은 지식을 가진 유능한 어시스턴트 입니다. 다음 질문에 대해서 올바르게 답해주세요.\n\n {format_kullm(sample)}{tokenizer.eos_token}"
         return sample
 
     # apply prompt template per sample
@@ -86,8 +87,8 @@ def FT_main(args):
         logging_steps=1000,
         learning_rate=args.lr,
         max_grad_norm=0.3,
-        num_train_epochs=args.epochs,  # epochs 대신 max_steps을 기준으로 할 수 있습니다.
-        # max_steps=100,
+        # num_train_epochs=args.epochs,  # epochs 대신 max_steps을 기준으로 할 수 있습니다.
+        max_steps=args.max_steps,
         warmup_ratio=0.03,
         per_device_train_batch_size=args.batch_size,
         gradient_accumulation_steps=1,
@@ -125,6 +126,7 @@ if __name__=="__main__":
     parser.add_argument('--lora_rank', type=int, default=64, help='LoRA Rank size')
     parser.add_argument('--save_limit', type=int, default=2, help='최근 기준 저장 체크포인트')
     parser.add_argument('--lr', type=int, default=1e-3, help='학습률')
+    parser.add_argument('--max_steps', type=int, default=500, help='stpe수')
 
     args = parser.parse_args()
     FT_main(args)
