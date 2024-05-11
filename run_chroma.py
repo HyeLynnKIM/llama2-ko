@@ -88,10 +88,11 @@ def run_chromadb(model, tokenizer, file_path, embeddings, task, device_map):
         pad_token_id=tokenizer.eos_token_id,
     )
     llm = HuggingFacePipeline(pipeline=pipe)
+    retriever = posts.as_retriever(search_kwargs={"k": 5})
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
-        retriever=posts.as_retriever(),
+        retriever=retriever,
         chain_type_kwargs={"prompt": prompt}
     )
 

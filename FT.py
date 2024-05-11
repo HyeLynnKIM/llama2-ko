@@ -87,8 +87,8 @@ def FT_main(args):
         logging_steps=1000,
         learning_rate=args.lr,
         max_grad_norm=0.3,
-        # num_train_epochs=args.epochs,  # epochs 대신 max_steps을 기준으로 할 수 있습니다.
-        max_steps=args.max_steps,
+        num_train_epochs=args.epochs,  # epochs 대신 max_steps을 기준으로 할 수 있습니다.
+        # max_steps=args.max_steps,
         warmup_ratio=0.03,
         per_device_train_batch_size=args.batch_size,
         gradient_accumulation_steps=1,
@@ -130,5 +130,4 @@ if __name__=="__main__":
 
     args = parser.parse_args()
     FT_main(args)
-    # "beomi/open-llama-2-ko-7b"
     # "beomi/open-llama-2-ko-7b"
